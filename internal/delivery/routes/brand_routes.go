@@ -13,7 +13,7 @@ func brandRoutes(e *echo.Group) {
 	usecase := usecase.NewBrandUsecase(repo)
 	handler := handlers.NewBrandHandler(usecase)
 
-	e.POST("/brands", handler.Create)
-	e.DELETE("/brands/:id", handler.Delete)
+	e.POST("/brands", handler.CreateBrand)
+	e.DELETE("/brands/:id", handler.DeleteBrand)
 	e.GET("/brands", handler.GetAllBrands)
 }

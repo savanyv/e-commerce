@@ -22,7 +22,7 @@ func NewBrandHandler(usecase usecase.BrandUsecase) *BrandHandler {
 	}
 }
 
-func (h *BrandHandler) Create(c echo.Context) error {
+func (h *BrandHandler) CreateBrand(c echo.Context) error {
 	req := &dtos.CreateBrandRequest{}
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
@@ -36,7 +36,7 @@ func (h *BrandHandler) Create(c echo.Context) error {
 		})
 	}
 
-	if err := h.usecase.Create(req); err != nil {
+	if err := h.usecase.CreateBrand(req); err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{
 			"message": err.Error(),
 		})
@@ -47,7 +47,7 @@ func (h *BrandHandler) Create(c echo.Context) error {
 	})
 }
 
-func (h *BrandHandler) Delete(c echo.Context) error {
+func (h *BrandHandler) DeleteBrand(c echo.Context) error {
 	idStr := c.Param("id")
 	ID, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -56,7 +56,7 @@ func (h *BrandHandler) Delete(c echo.Context) error {
 		})
 	}
 
-	if err := h.usecase.Delete(ID); err != nil {
+	if err := h.usecase.DeleteBrand(ID); err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{
 			"message": err.Error(),
 		})

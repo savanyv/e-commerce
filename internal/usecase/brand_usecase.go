@@ -9,8 +9,8 @@ import (
 )
 
 type BrandUsecase interface {
-	Create(req *dtos.CreateBrandRequest) error
-	Delete(ID int) error
+	CreateBrand(req *dtos.CreateBrandRequest) error
+	DeleteBrand(ID int) error
 	GetAllBrands() ([]*dtos.BrandResponse, error)
 }
 
@@ -24,7 +24,7 @@ func NewBrandUsecase(repo repository.BrandRepository) BrandUsecase {
 	}
 }
 
-func (u *brandUsecase) Create(req *dtos.CreateBrandRequest) error {
+func (u *brandUsecase) CreateBrand(req *dtos.CreateBrandRequest) error {
 	brand := &models.Brand{
 		Name: req.Name,
 	}
@@ -36,7 +36,7 @@ func (u *brandUsecase) Create(req *dtos.CreateBrandRequest) error {
 	return nil
 }
 
-func (u *brandUsecase) Delete(ID int) error {
+func (u *brandUsecase) DeleteBrand(ID int) error {
 	used, err := u.repo.IsUsedByProduct(ID)
 	if err != nil {
 		return errors.New("error checking if brand is used by product")
