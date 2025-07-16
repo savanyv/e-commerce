@@ -14,4 +14,5 @@ func brandRoutes(e *echo.Group) {
 	handler := handlers.NewBrandHandler(usecase)
 
 	e.POST("/brands", handler.Create)
+	e.DELETE("/brands/:id", handler.Delete)
 }

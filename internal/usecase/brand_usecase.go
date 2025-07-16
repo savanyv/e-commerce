@@ -10,6 +10,7 @@ import (
 
 type BrandUsecase interface {
 	Create(req *dtos.CreateBrandRequest) error
+	Delete(ID int) error
 }
 
 type brandUsecase struct {
@@ -29,6 +30,23 @@ func (u *brandUsecase) Create(req *dtos.CreateBrandRequest) error {
 
 	if err := u.repo.Create(brand); err != nil {
 		return errors.New("error creating brand")
+	}
+
+	return nil
+}
+
+func (u *brandUsecase) Delete(ID int) error {
+	used, err := u.repo.IsUsedByProduct(ID)
+	if err != nil {
+		return errors.New("error checking if brand is used by product")
+	}
+
+	if used {
+		return errors.New("brand is used by product")
+	}
+
+	if err := u.repo.Delete(ID); err != nil {
+		return errors.New("error deleting brand")
 	}
 
 	return nil

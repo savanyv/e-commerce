@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	dtos "github.com/savanyv/e-commerce/internal/dto"
@@ -43,5 +44,25 @@ func (h *BrandHandler) Create(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, echo.Map{
 		"message": "brand created successfully",
+	})
+}
+
+func (h *BrandHandler) Delete(c echo.Context) error {
+	idStr := c.Param("id")
+	ID, err := strconv.Atoi(idStr)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"message": err.Error(),
+		})
+	}
+
+	if err := h.usecase.Delete(ID); err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"message": "brand deleted successfully",
 	})
 }

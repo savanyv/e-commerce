@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Brand struct {
@@ -12,5 +10,4 @@ type Brand struct {
 	Products []Product `json:"products,omitempty" gorm:"foreignKey:IDBrand"`
 	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
