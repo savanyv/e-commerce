@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/savanyv/e-commerce/config"
 	"github.com/savanyv/e-commerce/internal/database"
+	"github.com/savanyv/e-commerce/internal/delivery/routes"
 )
 
 type Server struct {
@@ -25,6 +26,12 @@ func (s *Server) RunServer() error {
 	_, err := database.ConnectPostgres(s.config)
 	if err != nil {
 		log.Println("error connecting to postgres", err)
+		return err
+	}
+
+	// Setup Routes
+	if err := routes.SetupRoutes(s.server); err != nil {
+		log.Println("error setting up routes", err)
 		return err
 	}
 
