@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/savanyv/e-commerce/config"
+	"github.com/savanyv/e-commerce/internal/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -24,6 +25,13 @@ func ConnectPostgres(cfg *config.Config) (*gorm.DB, error) {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, errors.New("error connecting to postgres")
+	}
+
+	if err := db.AutoMigrate(
+		&models.Brand{},
+		&models.Product{},
+	); err != nil {
+		return nil, errors.New("error migrating database")
 	}
 
 	DB = db
