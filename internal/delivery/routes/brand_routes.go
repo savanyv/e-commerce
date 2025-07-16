@@ -15,4 +15,5 @@ func brandRoutes(e *echo.Group) {
 
 	e.POST("/brands", handler.Create)
 	e.DELETE("/brands/:id", handler.Delete)
+	e.GET("/brands", handler.GetAllBrands)
 }

@@ -11,6 +11,7 @@ import (
 type BrandUsecase interface {
 	Create(req *dtos.CreateBrandRequest) error
 	Delete(ID int) error
+	GetAllBrands() ([]*dtos.BrandResponse, error)
 }
 
 type brandUsecase struct {
@@ -50,4 +51,21 @@ func (u *brandUsecase) Delete(ID int) error {
 	}
 
 	return nil
+}
+
+func (u *brandUsecase) GetAllBrands() ([]*dtos.BrandResponse, error) {
+	brands, err := u.repo.FindAll()
+	if err != nil {
+		return nil, errors.New("error getting all brands")
+	}
+
+	var res []*dtos.BrandResponse
+	for _, brand := range brands {
+		res = append(res, &dtos.BrandResponse{
+			ID:        brand.ID,
+			Name:      brand.Name,
+		})
+	}
+
+	return res, nil
 }

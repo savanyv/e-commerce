@@ -66,3 +66,17 @@ func (h *BrandHandler) Delete(c echo.Context) error {
 		"message": "brand deleted successfully",
 	})
 }
+
+func (h *BrandHandler) GetAllBrands(c echo.Context) error {
+	brands, err := h.usecase.GetAllBrands()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"data": brands,
+		"message": "brands retrieved successfully",
+	})
+}
