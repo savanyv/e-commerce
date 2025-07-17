@@ -6,6 +6,7 @@ func SetupRoutes(e *echo.Echo) error {
 	api := e.Group("/api")
 
 	brandRoutes(api)
+	productRoutes(api)
 
 	return nil
 }
