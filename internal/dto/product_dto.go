@@ -20,7 +20,7 @@ type BrandSimple struct {
 }
 
 type ProductResponse struct {
-	ID uint `json:"id"`
+	ID int `json:"id"`
 	Name string `json:"name"`
 	Price float64 `json:"price"`
 	Quantity int `json:"quantity"`

@@ -37,6 +37,11 @@ func (u *brandUsecase) CreateBrand(req *dtos.CreateBrandRequest) error {
 }
 
 func (u *brandUsecase) DeleteBrand(ID int) error {
+	_, err := u.repo.FindByID(ID)
+	if err != nil {
+		return errors.New("brand not found")
+	}
+
 	used, err := u.repo.IsUsedByProduct(ID)
 	if err != nil {
 		return errors.New("error checking if brand is used by product")
