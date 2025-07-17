@@ -74,3 +74,25 @@ func (h *ProductHandler) GetAllProducts(c echo.Context) error {
 		"message": "products retrieved successfully",
 	})
 }
+
+func (h *ProductHandler) GetByIDProduct(c echo.Context) error {
+	idStr := c.Param("id")
+	ID, err := strconv.Atoi(idStr)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"message": err.Error(),
+		})
+	}
+
+	product, err := h.usecase.GetByIDProduct(ID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"data":    product,
+		"message": "product retrieved successfully",
+	})
+}

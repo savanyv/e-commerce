@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"strings"
 
 	dtos "github.com/savanyv/e-commerce/internal/dto"
 	"github.com/savanyv/e-commerce/internal/models"
@@ -25,6 +26,15 @@ func NewBrandUsecase(repo repository.BrandRepository) BrandUsecase {
 }
 
 func (u *brandUsecase) CreateBrand(req *dtos.CreateBrandRequest) error {
+	if strings.TrimSpace(req.Name) == "" {
+		return errors.New("name is required")
+	}
+
+	existing, _ := u.repo.FindByName(req.Name)
+	if existing != nil {
+		return errors.New("brand with this name already exists")
+	}
+
 	brand := &models.Brand{
 		Name: req.Name,
 	}

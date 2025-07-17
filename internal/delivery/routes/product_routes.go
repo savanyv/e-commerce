@@ -16,4 +16,5 @@ func productRoutes(e *echo.Group) {
 
 	e.POST("/products", handler.CreateHandler)
 	e.GET("/products", handler.GetAllProducts)
+	e.GET("/products/:id", handler.GetByIDProduct)
 }

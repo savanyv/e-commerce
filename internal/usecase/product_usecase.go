@@ -11,9 +11,9 @@ import (
 type ProductUsecase interface {
 	CreateProduct(req *dtos.CreateProductRequest) error
 	GetAllProduct(page, limit int) ([]*dtos.ProductResponse, int64, error)
+	GetByIDProduct(ID int) (*dtos.ProductResponse, error)
 	// UpdateProduct(req *dtos.UpdateProductRequest) error
 	// DeleteProduct(ID int) error
-	// GetByIDProduct(ID int) (*dtos.ProductResponse, error)
 }
 
 type productUsecase struct {
@@ -32,6 +32,14 @@ func (u *productUsecase) CreateProduct(req *dtos.CreateProductRequest) error {
 	_, err := u.brandRepo.FindByID(int(req.IDBrand))
 	if err != nil {
 		return errors.New("brand not found")
+	}
+
+	if req.Quantity <= 0 {
+		return errors.New("quantity must be greater than 0")
+	}
+
+	if req.Price <= 0 {
+		return errors.New("price must be greater than 0")
 	}
 
 	product := &models.Product{
@@ -75,4 +83,24 @@ func (u *productUsecase) GetAllProduct(page, limit int) ([]*dtos.ProductResponse
 	}
 
 	return res, total, nil
+}
+
+func (u *productUsecase) GetByIDProduct(ID int) (*dtos.ProductResponse, error) {
+	product, err := u.repo.FindByID(ID)
+	if err != nil {
+		return nil, errors.New("product not found")
+	}
+
+	res := &dtos.ProductResponse{
+		ID:        product.ID,
+		Name:      product.Name,
+		Price:     product.Price,
+		Quantity:  product.Quantity,
+		Brand: dtos.BrandSimple{
+			ID:   product.IDBrand,
+			Name: product.Brand.Name,
+		},
+	}
+
+	return res, nil
 }

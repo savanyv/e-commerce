@@ -9,6 +9,7 @@ type BrandRepository interface {
 	Create(brand *models.Brand) error
 	Delete(id int) error
 	FindByID(id int) (*models.Brand, error)
+	FindByName(name string) (*models.Brand, error)
 	FindAll() ([]*models.Brand, error)
 	IsUsedByProduct(id int) (bool, error)
 }
@@ -42,6 +43,15 @@ func (r *brandRepository) Delete(id int) error {
 func (r *brandRepository) FindByID(id int) (*models.Brand, error) {
 	var brand models.Brand
 	if err := r.db.Where("id = ?", id).First(&brand).Error; err != nil {
+		return nil, err
+	}
+
+	return &brand, nil
+}
+
+func (r *brandRepository) FindByName(name string) (*models.Brand, error) {
+	var brand models.Brand
+	if err := r.db.Where("name = ?", name).First(&brand).Error; err != nil {
 		return nil, err
 	}
 
