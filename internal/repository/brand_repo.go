@@ -60,7 +60,7 @@ func (r *brandRepository) FindByName(name string) (*models.Brand, error) {
 
 func (r *brandRepository) FindAll() ([]*models.Brand, error) {
 	var brands []*models.Brand
-	if err := r.db.Find(&brands).Error; err != nil {
+	if err := r.db.Preload("Products").Find(&brands).Error; err != nil {
 		return nil, err
 	}
 

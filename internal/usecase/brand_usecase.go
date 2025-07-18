@@ -76,9 +76,20 @@ func (u *brandUsecase) GetAllBrands() ([]*dtos.BrandResponse, error) {
 
 	var res []*dtos.BrandResponse
 	for _, brand := range brands {
+		var products []*dtos.ResponseProduct
+		for _, p := range brand.Products {
+			products = append(products, &dtos.ResponseProduct{
+				ID:        p.ID,
+				Name:      p.Name,
+				Price:     p.Price,
+				Quantity:  p.Quantity,
+			})
+		}
+
 		res = append(res, &dtos.BrandResponse{
 			ID:        brand.ID,
 			Name:      brand.Name,
+			Products:  products,
 		})
 	}
 
