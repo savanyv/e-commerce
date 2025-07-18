@@ -129,3 +129,23 @@ func (h *ProductHandler) UpdateProduct(c echo.Context) error {
 		"message": "product updated successfully",
 	})
 }
+
+func (h *ProductHandler) DeleteProduct(c echo.Context) error {
+	idStr := c.Param("id")
+	ID, err := strconv.Atoi(idStr)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{
+			"message": err.Error(),
+		})
+	}
+
+	if err := h.usecase.DeleteProduct(ID); err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"message": "product deleted successfully",
+	})
+}

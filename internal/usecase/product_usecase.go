@@ -13,7 +13,7 @@ type ProductUsecase interface {
 	GetAllProduct(page, limit int) ([]*dtos.ProductResponse, int64, error)
 	GetByIDProduct(ID int) (*dtos.ProductResponse, error)
 	UpdateProduct(ID int, req *dtos.UpdateProductRequest) error
-	// DeleteProduct(ID int) error
+	DeleteProduct(ID int) error
 }
 
 type productUsecase struct {
@@ -126,6 +126,19 @@ func (u *productUsecase) UpdateProduct(ID int, req *dtos.UpdateProductRequest) e
 
 	if err := u.repo.UpdateProduct(product); err != nil {
 		return errors.New("error updating product")
+	}
+
+	return nil
+}
+
+func (u *productUsecase) DeleteProduct(ID int) error {
+	_, err := u.repo.FindByID(ID)
+	if err != nil {
+		return errors.New("product not found")
+	}
+
+	if err := u.repo.DeleteProduct(ID); err != nil {
+		return errors.New("error deleting product")
 	}
 
 	return nil
